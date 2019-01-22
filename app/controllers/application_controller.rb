@@ -29,7 +29,6 @@ class ApplicationController < ActionController::Base
   end
   helper_method :cart_subtotal_cents
 
-
   def update_cart(new_cart)
     cookies[:cart] = {
       value: JSON.generate(new_cart),
@@ -37,5 +36,18 @@ class ApplicationController < ActionController::Base
     }
     cookies[:cart]
   end
+
+  def show_order
+    order_item_ids = @order.line_items.ids
+    order_item_ids.each do |order_item_id|
+      @show_order ||= Product.joins("INNER JOIN line_items ON line_items.product_id = products.id").where("line_items.id = #{order_item_id}").map {|product| { product:product } }
+
+  puts "Show_Order: #{@show_order}"
+  puts "Show_Order[0]: #{@show_order[0][:product].name}"
+  # puts "Show_Order: #{@show_order[1][:product].name}"
+
+    end
+  end
+  helper_method :show_order
 
 end
