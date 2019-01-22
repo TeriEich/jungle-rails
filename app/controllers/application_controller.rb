@@ -37,17 +37,27 @@ class ApplicationController < ActionController::Base
     cookies[:cart]
   end
 
-  def show_order
-    order_item_ids = @order.line_items.ids
-    order_item_ids.each do |order_item_id|
-      @show_order ||= Product.joins("INNER JOIN line_items ON line_items.product_id = products.id").where("line_items.id = #{order_item_id}").map {|product| { product:product } }
-
-  puts "Show_Order: #{@show_order}"
-  puts "Show_Order[0]: #{@show_order[0][:product].name}"
-  # puts "Show_Order: #{@show_order[1][:product].name}"
-
-    end
+  def order_price_quantity_details
+    @order_price_quantity_details = Array.new
+    line_item_details = LineItem.joins("INNER JOIN orders ON orders.id = line_items.order_id").where("orders.id = #{params[:id]}").map {|line_item| { line_item:line_item } }
+    @order_price_quantity_details.push(line_item_details)
+    return @order_price_quantity_details
   end
-  helper_method :show_order
+  helper_method :order_price_quantity_details
+
+  def order_product_details
+    @order_product_details = Array.new
+    @order.line_items.ids.each do |order_item_id|
+      order_item = LineItem.joins(:product)
+      .select("products.name, products.description, products.image, line_items.quantity, line_items.item_price_cents, line_items.total_price_cents")
+      .where("line_items.id = #{order_item_id}")
+      .map {|product, line_item| { product:product, line_item:line_item } }
+      @order_product_details.push(order_item)
+    end
+    # @order_product_details.push(order_price_quantity_details)
+    puts "@@@ORDER DETAILS: #{@order_product_details}"
+    return @order_product_details
+  end
+  helper_method :order_product_details
 
 end

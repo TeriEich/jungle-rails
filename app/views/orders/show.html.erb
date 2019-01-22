@@ -20,15 +20,14 @@
         </tr>
       </thead>
       <tbody>
-        <% show_order.each do |element| %>
-        <%= puts "html order: #{show_order[0][:product].name}" %>
-          <%= render 'line_item' %>
-          <% end %>
+        <% order_product_details.each do |product| %>
+          <%= render 'line_item', product_name: product[0][:product].name, product_description: product[0][:product].description, product_image: product[0][:product].image, line_item_price: product[0][:line_item].item_price_cents, line_item_quantity: product[0][:line_item].quantity, line_item_total: product[0][:line_item].total_price_cents %>
+        <% end %>
       </tbody>
       <tfoot>
         <tr>
           <th colspan="4">
-            TOTAL:
+            ORDER TOTAL:
           </th>
           <th>
             $ <%= @order.total_cents / 100 %>
