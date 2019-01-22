@@ -132,5 +132,31 @@ cat3.products.create!({
   price: 2_483.75
 })
 
+## REVIEWS
+
+puts "Fabricating Untrustworthy Reviews ..."
+
+Review.destroy_all
+
+Review.create!({
+  product_id: 9,
+  user_id: 1,
+  description: 'This is too hipster for me. I can\'t figure out how to use it!',
+  rating: 2
+})
+
+Review.create!({
+  product_id: 4,
+  user_id: 1,
+  description: 'What even is this?! I love it!',
+  rating: 4
+})
+
+Review.create!({
+  product_id: 2,
+  user_id: 1,
+  description: 'I\'d tell you how much I love this as compared to my favourite band, but you\'ve never heard of them.',
+  rating: 5
+})
 
 puts "DONE!"
