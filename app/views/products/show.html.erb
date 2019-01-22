@@ -23,6 +23,24 @@
           <dt>Price</dt>
           <dd><%= @product.price %></dd>
         </dl>
+        <h4>Reviews:</h4>
+        <% @product.reviews.each do |review| %>
+        <dl class="dl-horizontal">
+          <%= puts "REVIEW: #{review}" %>
+          <dt>Date</dt>
+          <dd><%= review.created_at %></dd>
+          <% if review.updated_at != review.created_at %>
+          <dt>Last Edited</dt>
+          <dd><%= review.updated_at %></dd>
+          <% end %>
+          <dt>User</dt>
+          <dd><%= review.user.first_name %></dd>
+          <dt>Rating</dt>
+          <dd><%= review.rating %></dd>
+          <dt>Feedback</dt>
+          <dd><%= review.description %></dd>
+        </dl>
+        <% end %>
       </div>
     </div>
 
